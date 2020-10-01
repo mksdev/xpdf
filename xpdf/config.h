@@ -14,13 +14,13 @@
 //------------------------------------------------------------------------
 
 // xpdf version
-#define xpdfVersion          "4.02"
-#define xpdfVersionNum       4.02
-#define xpdfMajorVersion     4
-#define xpdfMinorVersion     2
-#define xpdfUpdateVersion    0
-#define xpdfMajorVersionStr  "4"
-#define xpdfMinorVersionStr  "2"
+#define xpdfVersion "4.02"
+#define xpdfVersionNum 4.02
+#define xpdfMajorVersion 4
+#define xpdfMinorVersion 2
+#define xpdfUpdateVersion 0
+#define xpdfMajorVersionStr "4"
+#define xpdfMinorVersionStr "2"
 #define xpdfUpdateVersionStr "0"
 
 // supported PDF version
@@ -40,10 +40,10 @@
 
 // default paper size (in points) for PostScript output
 #ifdef A4_PAPER
-#define defPaperWidth  595    // ISO A4 (210x297 mm)
+#define defPaperWidth 595 // ISO A4 (210x297 mm)
 #define defPaperHeight 842
 #else
-#define defPaperWidth  612    // American letter (8.5x11")
+#define defPaperWidth 612 // American letter (8.5x11")
 #define defPaperHeight 792
 #endif
 
@@ -83,7 +83,8 @@
 #define pclose _pclose
 #endif
 
-#if defined(VMS) || defined(VMCMS) || defined(DOS) || defined(OS2) || defined(__EMX__) || defined(_WIN32) || defined(__DJGPP__)
+#if defined(VMS) || defined(VMCMS) || defined(DOS) || defined(OS2) || defined(__EMX__) ||          \
+    defined(_WIN32) || defined(__DJGPP__)
 #define POPEN_READ_MODE "rb"
 #else
 #define POPEN_READ_MODE "r"

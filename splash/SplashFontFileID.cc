@@ -12,15 +12,13 @@
 #pragma implementation
 #endif
 
-#include "gmempp.h"
 #include "SplashFontFileID.h"
+#include "gmempp.h"
 
 //------------------------------------------------------------------------
 // SplashFontFileID
 //------------------------------------------------------------------------
 
-SplashFontFileID::SplashFontFileID() {
-}
+SplashFontFileID::SplashFontFileID() {}
 
-SplashFontFileID::~SplashFontFileID() {
-}
+SplashFontFileID::~SplashFontFileID() {}

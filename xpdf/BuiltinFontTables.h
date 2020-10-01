@@ -11,7 +11,7 @@
 
 #include "BuiltinFont.h"
 
-#define nBuiltinFonts      14
+#define nBuiltinFonts 14
 #define nBuiltinFontSubsts 12
 
 extern BuiltinFont builtinFonts[nBuiltinFonts];

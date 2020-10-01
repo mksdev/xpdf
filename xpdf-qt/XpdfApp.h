@@ -11,9 +11,9 @@
 
 #include <aconf.h>
 
+#include "gtypes.h"
 #include <QApplication>
 #include <QColor>
-#include "gtypes.h"
 
 class GList;
 class XpdfViewer;
@@ -22,46 +22,54 @@ class XpdfViewer;
 // XpdfApp
 //------------------------------------------------------------------------
 
-class XpdfApp: public QApplication {
-  Q_OBJECT
+class XpdfApp : public QApplication {
+    Q_OBJECT
 
 public:
+    XpdfApp(int &argc, char **argv);
+    virtual ~XpdfApp();
 
-  XpdfApp(int &argc, char **argv);
-  virtual ~XpdfApp();
+    int getNumViewers();
 
-  int getNumViewers();
+    XpdfViewer *newWindow(GBool fullScreen = gFalse, const char *remoteServerName = NULL);
 
-  XpdfViewer *newWindow(GBool fullScreen = gFalse,
-			const char *remoteServerName = NULL);
+    GBool openInNewWindow(QString fileName,
+                          int page = 1,
+                          QString dest = QString(),
+                          QString password = QString(),
+                          GBool fullScreen = gFalse,
+                          const char *remoteServerName = NULL);
 
-  GBool openInNewWindow(QString fileName, int page = 1,
-			QString dest = QString(),
-			QString password = QString(),
-			GBool fullScreen = gFalse,
-			const char *remoteServerName = NULL);
+    void closeWindowOrQuit(XpdfViewer *viewer);
 
-  void closeWindowOrQuit(XpdfViewer *viewer);
+    void quit();
 
-  void quit();
+    //--- for use by XpdfViewer
 
-  //--- for use by XpdfViewer
-
-  int getErrorEventType() { return errorEventType; }
-  const QColor &getPaperColor() { return paperColor; }
-  const QColor &getMatteColor() { return matteColor; }
-  const QColor &getFullScreenMatteColor() { return fsMatteColor; }
-  GBool getReverseVideo() { return reverseVideo; }
+    int getErrorEventType() {
+        return errorEventType;
+    }
+    const QColor &getPaperColor() {
+        return paperColor;
+    }
+    const QColor &getMatteColor() {
+        return matteColor;
+    }
+    const QColor &getFullScreenMatteColor() {
+        return fsMatteColor;
+    }
+    GBool getReverseVideo() {
+        return reverseVideo;
+    }
 
 private:
+    int errorEventType;
+    QColor paperColor;
+    QColor matteColor;
+    QColor fsMatteColor;
+    GBool reverseVideo;
 
-  int errorEventType;
-  QColor paperColor;
-  QColor matteColor;
-  QColor fsMatteColor;
-  GBool reverseVideo;
-
-  GList *viewers;		// [XpdfViewer]
+    GList *viewers; // [XpdfViewer]
 };
 
 #endif

@@ -23,10 +23,9 @@
 
 class SplashFontFileID {
 public:
-
-  SplashFontFileID();
-  virtual ~SplashFontFileID();
-  virtual GBool matches(SplashFontFileID *id) = 0;
+    SplashFontFileID();
+    virtual ~SplashFontFileID();
+    virtual GBool matches(SplashFontFileID *id) = 0;
 };
 
 #endif

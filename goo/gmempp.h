@@ -40,7 +40,7 @@ extern void operator delete[](void *p, int dummy);
 
 // This transforms 'new Foo(...)' into 'new (1) Foo(...)', which
 // forces a call to the operator new variant with the 'int dummy' arg.
-#define debug_new new (1)
+#define debug_new new(1)
 #define new debug_new
 
 #endif // DEBUG_MEM

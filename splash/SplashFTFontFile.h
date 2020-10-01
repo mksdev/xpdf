@@ -28,66 +28,68 @@ class SplashFTFontEngine;
 // SplashFTFontFile
 //------------------------------------------------------------------------
 
-class SplashFTFontFile: public SplashFontFile {
+class SplashFTFontFile : public SplashFontFile {
 public:
-
-  static SplashFontFile *loadType1Font(SplashFTFontEngine *engineA,
-				       SplashFontFileID *idA,
-				       SplashFontType fontTypeA,
+    static SplashFontFile *loadType1Font(SplashFTFontEngine *engineA,
+                                         SplashFontFileID *idA,
+                                         SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-				       GString *fontBufA,
+                                         GString *fontBufA,
 #else
-				       char *fileNameA, GBool deleteFileA,
+                                         char *fileNameA,
+                                         GBool deleteFileA,
 #endif
-				       const char **encA);
-  static SplashFontFile *loadCIDFont(SplashFTFontEngine *engineA,
-				     SplashFontFileID *idA,
-				     SplashFontType fontTypeA,
+                                         const char **encA);
+    static SplashFontFile *loadCIDFont(SplashFTFontEngine *engineA,
+                                       SplashFontFileID *idA,
+                                       SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-				     GString *fontBufA,
+                                       GString *fontBufA,
 #else
-				     char *fileNameA, GBool deleteFileA,
+                                       char *fileNameA,
+                                       GBool deleteFileA,
 #endif
-				     int *codeToGIDA, int codeToGIDLenA);
-  static SplashFontFile *loadTrueTypeFont(SplashFTFontEngine *engineA,
-					  SplashFontFileID *idA,
-					  SplashFontType fontTypeA,
+                                       int *codeToGIDA,
+                                       int codeToGIDLenA);
+    static SplashFontFile *loadTrueTypeFont(SplashFTFontEngine *engineA,
+                                            SplashFontFileID *idA,
+                                            SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-					  GString *fontBufA,
+                                            GString *fontBufA,
 #else
-					  char *fileNameA,
-					  GBool deleteFileA,
+                                            char *fileNameA,
+                                            GBool deleteFileA,
 #endif
-					  int fontNum,
-					  int *codeToGIDA,
-					  int codeToGIDLenA);
+                                            int fontNum,
+                                            int *codeToGIDA,
+                                            int codeToGIDLenA);
 
-  virtual ~SplashFTFontFile();
+    virtual ~SplashFTFontFile();
 
-  // Create a new SplashFTFont, i.e., a scaled instance of this font
-  // file.
-  virtual SplashFont *makeFont(SplashCoord *mat,
-			       SplashCoord *textMat);
+    // Create a new SplashFTFont, i.e., a scaled instance of this font
+    // file.
+    virtual SplashFont *makeFont(SplashCoord *mat, SplashCoord *textMat);
 
 private:
-
-  SplashFTFontFile(SplashFTFontEngine *engineA,
-		   SplashFontFileID *idA,
-		   SplashFontType fontTypeA,
+    SplashFTFontFile(SplashFTFontEngine *engineA,
+                     SplashFontFileID *idA,
+                     SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-		   GString *fontBufA,
+                     GString *fontBufA,
 #else
-		   char *fileNameA, GBool deleteFileA,
+                     char *fileNameA,
+                     GBool deleteFileA,
 #endif
-		   FT_Face faceA,
-		   int *codeToGIDA, int codeToGIDLenA);
+                     FT_Face faceA,
+                     int *codeToGIDA,
+                     int codeToGIDLenA);
 
-  SplashFTFontEngine *engine;
-  FT_Face face;
-  int *codeToGID;
-  int codeToGIDLen;
+    SplashFTFontEngine *engine;
+    FT_Face face;
+    int *codeToGID;
+    int codeToGIDLen;
 
-  friend class SplashFTFont;
+    friend class SplashFTFont;
 };
 
 #endif // HAVE_FREETYPE_H

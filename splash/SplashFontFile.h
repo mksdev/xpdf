@@ -15,8 +15,8 @@
 #pragma interface
 #endif
 
-#include "gtypes.h"
 #include "SplashTypes.h"
+#include "gtypes.h"
 
 #if MULTITHREADED
 #include "GMutex.h"
@@ -32,13 +32,13 @@ class SplashFontFileID;
 //------------------------------------------------------------------------
 
 enum SplashFontType {
-  splashFontType1,		// GfxFontType.fontType1
-  splashFontType1C,		// GfxFontType.fontType1C
-  splashFontOpenTypeT1C,	// GfxFontType.fontType1COT
-  splashFontCID,		// GfxFontType.fontCIDType0/fontCIDType0C
-  splashFontOpenTypeCFF,	// GfxFontType.fontCIDType0COT
-  splashFontTrueType		// GfxFontType.fontTrueType/fontTrueTypeOT/
-				//             fontCIDType2/fontCIDType2OT
+    splashFontType1,       // GfxFontType.fontType1
+    splashFontType1C,      // GfxFontType.fontType1C
+    splashFontOpenTypeT1C, // GfxFontType.fontType1COT
+    splashFontCID,         // GfxFontType.fontCIDType0/fontCIDType0C
+    splashFontOpenTypeCFF, // GfxFontType.fontCIDType0COT
+    splashFontTrueType     // GfxFontType.fontTrueType/fontTrueTypeOT/
+                       //             fontCIDType2/fontCIDType2OT
 };
 
 //------------------------------------------------------------------------
@@ -47,49 +47,50 @@ enum SplashFontType {
 
 class SplashFontFile {
 public:
+    virtual ~SplashFontFile();
 
-  virtual ~SplashFontFile();
+    // Create a new SplashFont, i.e., a scaled instance of this font
+    // file.
+    virtual SplashFont *makeFont(SplashCoord *mat, SplashCoord *textMat) = 0;
 
-  // Create a new SplashFont, i.e., a scaled instance of this font
-  // file.
-  virtual SplashFont *makeFont(SplashCoord *mat, SplashCoord *textMat) = 0;
+    // Get the font file ID.
+    SplashFontFileID *getID() {
+        return id;
+    }
 
-  // Get the font file ID.
-  SplashFontFileID *getID() { return id; }
+    // Increment the reference count.
+    void incRefCnt();
 
-  // Increment the reference count.
-  void incRefCnt();
-
-  // Decrement the reference count.  If the new value is zero, delete
-  // the SplashFontFile object.
-  void decRefCnt();
+    // Decrement the reference count.  If the new value is zero, delete
+    // the SplashFontFile object.
+    void decRefCnt();
 
 protected:
-
-  SplashFontFile(SplashFontFileID *idA,
-		 SplashFontType fontTypeA,
+    SplashFontFile(SplashFontFileID *idA,
+                   SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-		 GString *fontBufA
+                   GString *fontBufA
 #else
-		 char *fileNameA, GBool deleteFileA
+                   char *fileNameA,
+                   GBool deleteFileA
 #endif
-		 );
+    );
 
-  SplashFontFileID *id;
-  SplashFontType fontType;
+    SplashFontFileID *id;
+    SplashFontType fontType;
 #if LOAD_FONTS_FROM_MEM
-  GString *fontBuf;
+    GString *fontBuf;
 #else
-  GString *fileName;
-  GBool deleteFile;
+    GString *fileName;
+    GBool deleteFile;
 #endif
 #if MULTITHREADED
-  GAtomicCounter refCnt;
+    GAtomicCounter refCnt;
 #else
-  int refCnt;
+    int refCnt;
 #endif
 
-  friend class SplashFontEngine;
+    friend class SplashFontEngine;
 };
 
 #endif

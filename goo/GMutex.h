@@ -14,10 +14,10 @@
 
 #include <aconf.h>
 #ifdef _WIN32
-#  include <windows.h>
-#  include <intrin.h>
+#include <intrin.h>
+#include <windows.h>
 #else
-#  include <pthread.h>
+#include <pthread.h>
 #endif
 
 //------------------------------------------------------------------------
@@ -65,37 +65,37 @@ typedef long GAtomicCounter;
 // Increment *counter by one and return the final value (after the
 // increment).
 static inline GAtomicCounter gAtomicIncrement(GAtomicCounter *counter) {
-  GAtomicCounter newVal;
+    GAtomicCounter newVal;
 
 #if defined(_WIN32)
-  newVal = _InterlockedIncrement(counter);
+    newVal = _InterlockedIncrement(counter);
 #elif defined(__GNUC__) || defined(__xlC__)
-  // __GNUC__ also covers LLVM/clang
-  newVal = __sync_add_and_fetch(counter, 1);
+    // __GNUC__ also covers LLVM/clang
+    newVal = __sync_add_and_fetch(counter, 1);
 #elif defined(__SUNPRO_CC)
-  newVal = atomic_inc_ulong_nv((ulong_t *)counter);
+    newVal = atomic_inc_ulong_nv((ulong_t *)counter);
 #else
-#  error "gAtomicIncrement is not defined for this compiler/platform"
+#error "gAtomicIncrement is not defined for this compiler/platform"
 #endif
-  return newVal;
+    return newVal;
 }
 
 // Decrement *counter by one and return the final value (after the
 // decrement).
 static inline GAtomicCounter gAtomicDecrement(GAtomicCounter *counter) {
-  GAtomicCounter newVal;
+    GAtomicCounter newVal;
 
 #if defined(_WIN32)
-  newVal = _InterlockedDecrement(counter);
+    newVal = _InterlockedDecrement(counter);
 #elif defined(__GNUC__) || defined(__xlC__)
-  // __GNUC__ also covers LLVM/clang
-  newVal = __sync_sub_and_fetch(counter, 1);
+    // __GNUC__ also covers LLVM/clang
+    newVal = __sync_sub_and_fetch(counter, 1);
 #elif defined(__SUNPRO_CC)
-  newVal = atomic_dec_ulong_nv((ulong_t *)counter);
+    newVal = atomic_dec_ulong_nv((ulong_t *)counter);
 #else
-#  error "gAtomicDecrement is not defined for this compiler/platform"
+#error "gAtomicDecrement is not defined for this compiler/platform"
 #endif
-  return newVal;
+    return newVal;
 }
 
 #endif // GMUTEX_H
