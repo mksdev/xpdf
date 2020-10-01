@@ -72,6 +72,18 @@ add_library(xpdf_objs OBJECT
   Zoox.cc
 )
 
+target_include_directories(xpdf_objs PUBLIC "${PROJECT_SOURCE_DIR}")
+target_include_directories(xpdf_objs PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(xpdf_objs PUBLIC "${PROJECT_SOURCE_DIR}/goo")
+target_include_directories(xpdf_objs PUBLIC "${PROJECT_SOURCE_DIR}/fofi")
+target_include_directories(xpdf_objs PUBLIC "${PROJECT_SOURCE_DIR}/splash")
+if (PNG_FOUND)
+  target_include_directories(xpdf_objs PUBLIC "${PNG_INCLUDE_DIRS}")
+endif ()
+if (HAVE_LCMS)
+  target_include_directories(xpdf_objs PUBLIC "${LCMS_INCLUDE_DIR}")
+endif ()
+
 #--- object files needed by XpdfWidget
 
 if ((QT4_FOUND OR Qt5Widgets_FOUND)
