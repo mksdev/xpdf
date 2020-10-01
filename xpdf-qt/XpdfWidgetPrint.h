@@ -15,7 +15,9 @@
 
 class XpdfWidget;
 
-extern XpdfWidget::ErrorCode printPDF(PDFDoc *doc, QPrinter *prt, int hDPI, int vDPI, XpdfWidget *widget);
+extern XpdfWidget::ErrorCode printPDF(PDFDoc *doc, QPrinter *prt,
+				      int hDPI, int vDPI,
+				      XpdfWidget *widget);
 
 #endif // XPDFWIDGET_PRINTING
 

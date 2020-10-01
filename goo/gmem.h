@@ -9,15 +9,15 @@
 #ifndef GMEM_H
 #define GMEM_H
 
-#include <aconf.h>
 #include <stdio.h>
+#include <aconf.h>
 
 #if USE_EXCEPTIONS
 
 class GMemException {
 public:
-    GMemException() {}
-    ~GMemException() {}
+  GMemException() {}
+  ~GMemException() {}
 };
 
 // This used to be:

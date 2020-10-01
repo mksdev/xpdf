@@ -59,7 +59,7 @@
 /*
  * Full path for the system-wide xpdfrc file.
  */
-@SYSTEM_XPDFRC_DEFINE @
+@SYSTEM_XPDFRC_DEFINE@
 
 /*
  * Various include files and functions.

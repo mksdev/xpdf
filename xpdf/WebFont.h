@@ -17,8 +17,8 @@
 #pragma interface
 #endif
 
-#include "GfxFont.h"
 #include "gtypes.h"
+#include "GfxFont.h"
 
 class FoFiTrueType;
 class FoFiType1C;
@@ -28,39 +28,42 @@ class XRef;
 
 class WebFont {
 public:
-    WebFont(GfxFont *gfxFontA, XRef *xref);
 
-    ~WebFont();
+  WebFont(GfxFont *gfxFontA, XRef *xref);
 
-    // Returns true if the font is, or can be converted to, a TrueType
-    // font.
-    GBool canWriteTTF();
+  ~WebFont();
 
-    // Returns true if the font is, or can be converted to, an OpenType
-    // font.
-    GBool canWriteOTF();
+  // Returns true if the font is, or can be converted to, a TrueType
+  // font.
+  GBool canWriteTTF();
 
-    // Write a TrueType (.ttf) file to [fontFilePath].  This can only be
-    // called if canWriteTTF() returns true.  Returns true on success.
-    GBool writeTTF(const char *fontFilePath);
+  // Returns true if the font is, or can be converted to, an OpenType
+  // font.
+  GBool canWriteOTF();
 
-    // Write an OpenType (.otf) file to [fontFilePath].  This can only
-    // be called if canWriteOTF() returns true.  Returns true on
-    // success.
-    GBool writeOTF(const char *fontFilePath);
+  // Write a TrueType (.ttf) file to [fontFilePath].  This can only be
+  // called if canWriteTTF() returns true.  Returns true on success.
+  GBool writeTTF(const char *fontFilePath);
+
+  // Write an OpenType (.otf) file to [fontFilePath].  This can only
+  // be called if canWriteOTF() returns true.  Returns true on
+  // success.
+  GBool writeOTF(const char *fontFilePath);
 
 private:
-    Gushort *makeType1CWidths(int *codeToGID, int nCodes, int *nWidths);
-    Gushort *makeCIDType0CWidths(int *codeToGID, int nCodes, int *nWidths);
-    Guchar *makeUnicodeCmapTable(int *codeToGID, int nCodes, int *unicodeCmapLength);
-    int *makeUnicodeToGID(int *codeToGID, int nCodes, int *unicodeToGIDLength);
 
-    GfxFont *gfxFont;
-    char *fontBuf;
-    int fontLength;
-    FoFiTrueType *ffTrueType;
-    FoFiType1C *ffType1C;
-    GBool isOpenType;
+  Gushort *makeType1CWidths(int *codeToGID, int nCodes, int *nWidths);
+  Gushort *makeCIDType0CWidths(int *codeToGID, int nCodes, int *nWidths);
+  Guchar *makeUnicodeCmapTable(int *codeToGID, int nCodes,
+			       int *unicodeCmapLength);
+  int *makeUnicodeToGID(int *codeToGID, int nCodes, int *unicodeToGIDLength);
+
+  GfxFont *gfxFont;
+  char *fontBuf;
+  int fontLength;
+  FoFiTrueType *ffTrueType;
+  FoFiType1C *ffType1C;
+  GBool isOpenType;
 };
 
 #endif

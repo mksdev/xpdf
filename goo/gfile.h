@@ -12,21 +12,21 @@
 #define GFILE_H
 
 #include <aconf.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #if defined(_WIN32)
-#include <sys/stat.h>
-#ifdef FPTEX
-#include <win32lib.h>
-#else
-#include <windows.h>
-#endif
+#  include <sys/stat.h>
+#  ifdef FPTEX
+#    include <win32lib.h>
+#  else
+#    include <windows.h>
+#  endif
 #elif defined(ACORN)
 #elif defined(ANDROID)
 #else
-#include <sys/types.h>
-#include <unistd.h>
+#  include <unistd.h>
+#  include <sys/types.h>
 #endif
 #include "gtypes.h"
 
@@ -65,7 +65,8 @@ extern time_t getModTime(char *fileName);
 // should be done to the returned file pointer; the file may be
 // reopened later for reading, but not for writing.  The <mode> string
 // should be "w" or "wb".  Returns true on success.
-extern GBool openTempFile(GString **name, FILE **f, const char *mode, const char *ext);
+extern GBool openTempFile(GString **name, FILE **f,
+			  const char *mode, const char *ext);
 
 // Create a directory.  Returns true on success.
 extern GBool createDir(char *path, int mode);

@@ -26,87 +26,69 @@ class HTMLGenFontDefn;
 
 class HTMLGen {
 public:
-    HTMLGen(double backgroundResolutionA);
-    ~HTMLGen();
 
-    GBool isOk() {
-        return ok;
-    }
+  HTMLGen(double backgroundResolutionA);
+  ~HTMLGen();
 
-    double getBackgroundResolution() {
-        return backgroundResolution;
-    }
-    void setBackgroundResolution(double backgroundResolutionA) {
-        backgroundResolution = backgroundResolutionA;
-    }
+  GBool isOk() { return ok; }
 
-    double getZoom() {
-        return zoom;
-    }
-    void setZoom(double zoomA) {
-        zoom = zoomA;
-    }
+  double getBackgroundResolution() { return backgroundResolution; }
+  void setBackgroundResolution(double backgroundResolutionA)
+    { backgroundResolution = backgroundResolutionA; }
 
-    GBool getDrawInvisibleText() {
-        return drawInvisibleText;
-    }
-    void setDrawInvisibleText(GBool drawInvisibleTextA) {
-        drawInvisibleText = drawInvisibleTextA;
-    }
+  double getZoom() { return zoom; }
+  void setZoom(double zoomA) { zoom = zoomA; }
 
-    GBool getAllTextInvisible() {
-        return allTextInvisible;
-    }
-    void setAllTextInvisible(GBool allTextInvisibleA) {
-        allTextInvisible = allTextInvisibleA;
-    }
+  GBool getDrawInvisibleText() { return drawInvisibleText; }
+  void setDrawInvisibleText(GBool drawInvisibleTextA)
+    { drawInvisibleText = drawInvisibleTextA; }
 
-    void setExtractFontFiles(GBool extractFontFilesA) {
-        extractFontFiles = extractFontFilesA;
-    }
+  GBool getAllTextInvisible() { return allTextInvisible; }
+  void setAllTextInvisible(GBool allTextInvisibleA)
+    { allTextInvisible = allTextInvisibleA; }
 
-    void startDoc(PDFDoc *docA);
-    int convertPage(int pg,
-                    const char *pngURL,
-                    const char *htmlDir,
-                    int (*writeHTML)(void *stream, const char *data, int size),
-                    void *htmlStream,
-                    int (*writePNG)(void *stream, const char *data, int size),
-                    void *pngStream);
+  void setExtractFontFiles(GBool extractFontFilesA)
+    { extractFontFiles = extractFontFilesA; }
+
+  void startDoc(PDFDoc *docA);
+  int convertPage(int pg, const char *pngURL, const char *htmlDir,
+		  int (*writeHTML)(void *stream, const char *data, int size),
+		  void *htmlStream,
+		  int (*writePNG)(void *stream, const char *data, int size),
+		  void *pngStream);
 
 private:
-    int findDirSpan(GList *words, int firstWordIdx, int primaryDir, int *spanDir);
-    void appendSpans(GList *words,
-                     int firstWordIdx,
-                     int lastWordIdx,
-                     int primaryDir,
-                     int spanDir,
-                     double base,
-                     GBool dropCapLine,
-                     GString *s);
-    void appendUTF8(Unicode u, GString *s);
-    HTMLGenFontDefn *getFontDefn(TextFontInfo *font, const char *htmlDir);
-    HTMLGenFontDefn *getFontFile(TextFontInfo *font, const char *htmlDir);
-    HTMLGenFontDefn *getSubstituteFont(TextFontInfo *font);
-    void getFontDetails(TextFontInfo *font, const char **family, const char **weight, const char **style, double *scale);
 
-    double backgroundResolution;
-    double zoom;
-    GBool drawInvisibleText;
-    GBool allTextInvisible;
-    GBool extractFontFiles;
+  int findDirSpan(GList *words, int firstWordIdx, int primaryDir,
+		  int *spanDir);
+  void appendSpans(GList *words, int firstWordIdx, int lastWordIdx,
+		   int primaryDir, int spanDir,
+		   double base, GBool dropCapLine, GString *s);
+  void appendUTF8(Unicode u, GString *s);
+  HTMLGenFontDefn *getFontDefn(TextFontInfo *font, const char *htmlDir);
+  HTMLGenFontDefn *getFontFile(TextFontInfo *font, const char *htmlDir);
+  HTMLGenFontDefn *getSubstituteFont(TextFontInfo *font);
+  void getFontDetails(TextFontInfo *font, const char **family,
+		      const char **weight, const char **style,
+		      double *scale);
 
-    PDFDoc *doc;
-    TextOutputDev *textOut;
-    SplashOutputDev *splashOut;
+  double backgroundResolution;
+  double zoom;
+  GBool drawInvisibleText;
+  GBool allTextInvisible;
+  GBool extractFontFiles;
 
-    GList *fonts; // [TextFontInfo]
-    double *fontScales;
+  PDFDoc *doc;
+  TextOutputDev *textOut;
+  SplashOutputDev *splashOut;
 
-    GList *fontDefns; // [HTMLGenFontDefn]
-    int nextFontFaceIdx;
+  GList *fonts;			// [TextFontInfo]
+  double *fontScales;
 
-    GBool ok;
+  GList *fontDefns;		// [HTMLGenFontDefn]
+  int nextFontFaceIdx;
+
+  GBool ok;
 };
 
 #endif

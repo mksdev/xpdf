@@ -20,7 +20,7 @@
 
 class XRef;
 
-#define tokBufSize 128 // size of token buffer
+#define tokBufSize 128		// size of token buffer
 
 //------------------------------------------------------------------------
 // Lexer
@@ -28,64 +28,58 @@ class XRef;
 
 class Lexer {
 public:
-    // Construct a lexer for a single stream.  Deletes the stream when
-    // lexer is deleted.
-    Lexer(XRef *xref, Stream *str);
 
-    // Construct a lexer for a stream or array of streams (assumes obj
-    // is either a stream or array of streams).
-    Lexer(XRef *xref, Object *obj);
+  // Construct a lexer for a single stream.  Deletes the stream when
+  // lexer is deleted.
+  Lexer(XRef *xref, Stream *str);
 
-    // Destructor.
-    ~Lexer();
+  // Construct a lexer for a stream or array of streams (assumes obj
+  // is either a stream or array of streams).
+  Lexer(XRef *xref, Object *obj);
 
-    // Get the next object from the input stream.
-    Object *getObj(Object *obj);
+  // Destructor.
+  ~Lexer();
 
-    // Skip to the beginning of the next line in the input stream.
-    void skipToNextLine();
+  // Get the next object from the input stream.
+  Object *getObj(Object *obj);
 
-    // Skip to the end of the input stream.
-    void skipToEOF();
+  // Skip to the beginning of the next line in the input stream.
+  void skipToNextLine();
 
-    // Skip over one character.
-    void skipChar() {
-        getChar();
-    }
+  // Skip to the end of the input stream.
+  void skipToEOF();
 
-    // Get stream index (for arrays of streams).
-    int getStreamIndex() {
-        return strPtr;
-    }
+  // Skip over one character.
+  void skipChar() { getChar(); }
 
-    // Get stream.
-    Stream *getStream() {
-        return curStr.isNone() ? (Stream *)NULL : curStr.getStream();
-    }
+  // Get stream index (for arrays of streams).
+  int getStreamIndex() { return strPtr; }
 
-    // Get current position in file.
-    GFileOffset getPos() {
-        return curStr.isNone() ? -1 : curStr.streamGetPos();
-    }
+  // Get stream.
+  Stream *getStream()
+    { return curStr.isNone() ? (Stream *)NULL : curStr.getStream(); }
 
-    // Set position in file.
-    void setPos(GFileOffset pos, int dir = 0) {
-        if(!curStr.isNone())
-            curStr.streamSetPos(pos, dir);
-    }
+  // Get current position in file.
+  GFileOffset getPos()
+    { return curStr.isNone() ? -1 : curStr.streamGetPos(); }
 
-    // Returns true if <c> is a whitespace character.
-    static GBool isSpace(int c);
+  // Set position in file.
+  void setPos(GFileOffset pos, int dir = 0)
+    { if (!curStr.isNone()) curStr.streamSetPos(pos, dir); }
+
+  // Returns true if <c> is a whitespace character.
+  static GBool isSpace(int c);
 
 private:
-    int getChar();
-    int lookChar();
 
-    Array *streams;          // array of input streams
-    int strPtr;              // index of current stream
-    Object curStr;           // current stream
-    GBool freeArray;         // should lexer free the streams array?
-    char tokBuf[tokBufSize]; // temporary token buffer
+  int getChar();
+  int lookChar();
+
+  Array *streams;		// array of input streams
+  int strPtr;			// index of current stream
+  Object curStr;		// current stream
+  GBool freeArray;		// should lexer free the streams array?
+  char tokBuf[tokBufSize];	// temporary token buffer
 };
 
 #endif

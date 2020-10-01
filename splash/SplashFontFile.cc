@@ -14,15 +14,15 @@
 
 #include <stdio.h>
 #ifndef _WIN32
-#include <unistd.h>
+#  include <unistd.h>
 #endif
+#include "gmempp.h"
 #include "GString.h"
 #include "SplashFontFile.h"
 #include "SplashFontFileID.h"
-#include "gmempp.h"
 
 #ifdef VMS
-#if(__VMS_VER < 70000000)
+#if (__VMS_VER < 70000000)
 extern "C" int unlink(char *filename);
 #endif
 #endif
@@ -32,54 +32,53 @@ extern "C" int unlink(char *filename);
 //------------------------------------------------------------------------
 
 SplashFontFile::SplashFontFile(SplashFontFileID *idA,
-                               SplashFontType fontTypeA,
+			       SplashFontType fontTypeA,
 #if LOAD_FONTS_FROM_MEM
-                               GString *fontBufA
+			       GString *fontBufA
 #else
-                               char *fileNameA,
-                               GBool deleteFileA
+			       char *fileNameA, GBool deleteFileA
 #endif
-) {
-    id = idA;
-    fontType = fontTypeA;
+			       ) {
+  id = idA;
+  fontType = fontTypeA;
 #if LOAD_FONTS_FROM_MEM
-    fontBuf = fontBufA;
+  fontBuf = fontBufA;
 #else
-    fileName = new GString(fileNameA);
-    deleteFile = deleteFileA;
+  fileName = new GString(fileNameA);
+  deleteFile = deleteFileA;
 #endif
-    refCnt = 0;
+  refCnt = 0;
 }
 
 SplashFontFile::~SplashFontFile() {
 #if LOAD_FONTS_FROM_MEM
-    delete fontBuf;
+  delete fontBuf;
 #else
-    if(deleteFile) {
-        unlink(fileName->getCString());
-    }
-    delete fileName;
+  if (deleteFile) {
+    unlink(fileName->getCString());
+  }
+  delete fileName;
 #endif
-    delete id;
+  delete id;
 }
 
 void SplashFontFile::incRefCnt() {
 #if MULTITHREADED
-    gAtomicIncrement(&refCnt);
+  gAtomicIncrement(&refCnt);
 #else
-    ++refCnt;
+  ++refCnt;
 #endif
 }
 
 void SplashFontFile::decRefCnt() {
-    GBool done;
+  GBool done;
 
 #if MULTITHREADED
-    done = gAtomicDecrement(&refCnt) == 0;
+  done = gAtomicDecrement(&refCnt) == 0;
 #else
-    done = --refCnt == 0;
+  done = --refCnt == 0;
 #endif
-    if(done) {
-        delete this;
-    }
+  if (done) {
+    delete this;
+  }
 }

@@ -39,150 +39,128 @@ class TextString;
 
 class Catalog {
 public:
-    // Constructor.
-    Catalog(PDFDoc *docA);
 
-    // Destructor.
-    ~Catalog();
+  // Constructor.
+  Catalog(PDFDoc *docA);
 
-    // Is catalog valid?
-    GBool isOk() {
-        return ok;
-    }
+  // Destructor.
+  ~Catalog();
 
-    // Get number of pages.
-    int getNumPages() {
-        return numPages;
-    }
+  // Is catalog valid?
+  GBool isOk() { return ok; }
 
-    // Get a page.
-    Page *getPage(int i);
+  // Get number of pages.
+  int getNumPages() { return numPages; }
 
-    // Get the reference for a page object.
-    Ref *getPageRef(int i);
+  // Get a page.
+  Page *getPage(int i);
 
-    // Remove a page from the catalog.  (It can be reloaded later by
-    // calling getPage).
-    void doneWithPage(int i);
+  // Get the reference for a page object.
+  Ref *getPageRef(int i);
 
-    // Return base URI, or NULL if none.
-    GString *getBaseURI() {
-        return baseURI;
-    }
+  // Remove a page from the catalog.  (It can be reloaded later by
+  // calling getPage).
+  void doneWithPage(int i);
 
-    // Return the contents of the metadata stream, or NULL if there is
-    // no metadata.
-    GString *readMetadata();
+  // Return base URI, or NULL if none.
+  GString *getBaseURI() { return baseURI; }
 
-    // Return the structure tree root object.
-    Object *getStructTreeRoot() {
-        return &structTreeRoot;
-    }
+  // Return the contents of the metadata stream, or NULL if there is
+  // no metadata.
+  GString *readMetadata();
 
-    // Find a page, given its object ID.  Returns page number, or 0 if
-    // not found.
-    int findPage(int num, int gen);
+  // Return the structure tree root object.
+  Object *getStructTreeRoot() { return &structTreeRoot; }
 
-    // Find a named destination.  Returns the link destination, or
-    // NULL if <name> is not a destination.
-    LinkDest *findDest(GString *name);
+  // Find a page, given its object ID.  Returns page number, or 0 if
+  // not found.
+  int findPage(int num, int gen);
 
-    Object *getDests() {
-        return &dests;
-    }
+  // Find a named destination.  Returns the link destination, or
+  // NULL if <name> is not a destination.
+  LinkDest *findDest(GString *name);
 
-    Object *getNameTree() {
-        return &nameTree;
-    }
+  Object *getDests() { return &dests; }
 
-    Object *getOutline() {
-        return &outline;
-    }
+  Object *getNameTree() { return &nameTree; }
 
-    Object *getAcroForm() {
-        return &acroForm;
-    }
+  Object *getOutline() { return &outline; }
 
-    Form *getForm() {
-        return form;
-    }
+  Object *getAcroForm() { return &acroForm; }
 
-    GBool getNeedsRendering() {
-        return needsRendering;
-    }
+  Form *getForm() { return form; }
 
-    Object *getOCProperties() {
-        return &ocProperties;
-    }
+  GBool getNeedsRendering() { return needsRendering; }
 
-    // Return the DestOutputProfile stream, or NULL if there isn't one.
-    Object *getDestOutputProfile(Object *destOutProf);
+  Object *getOCProperties() { return &ocProperties; }
 
-    // Get the list of embedded files.
-    int getNumEmbeddedFiles();
-    Unicode *getEmbeddedFileName(int idx);
-    int getEmbeddedFileNameLength(int idx);
-    Object *getEmbeddedFileStreamRef(int idx);
-    Object *getEmbeddedFileStreamObj(int idx, Object *strObj);
+  // Return the DestOutputProfile stream, or NULL if there isn't one.
+  Object *getDestOutputProfile(Object *destOutProf);
 
-    // Return true if the document has page labels.
-    GBool hasPageLabels() {
-        return pageLabels != NULL;
-    }
+  // Get the list of embedded files.
+  int getNumEmbeddedFiles();
+  Unicode *getEmbeddedFileName(int idx);
+  int getEmbeddedFileNameLength(int idx);
+  Object *getEmbeddedFileStreamRef(int idx);
+  Object *getEmbeddedFileStreamObj(int idx, Object *strObj);
 
-    // Get the page label for page number [pageNum].  Returns NULL if
-    // the PDF file doesn't have page labels.
-    TextString *getPageLabel(int pageNum);
+  // Return true if the document has page labels.
+  GBool hasPageLabels() { return pageLabels != NULL; }
 
-    // Returns the page number corresponding to [pageLabel].  Returns -1
-    // if there is no matching page label, or if the document doesn't
-    // have page labels.
-    int getPageNumFromPageLabel(TextString *pageLabel);
+  // Get the page label for page number [pageNum].  Returns NULL if
+  // the PDF file doesn't have page labels.
+  TextString *getPageLabel(int pageNum);
 
-    Object *getViewerPreferences() {
-        return &viewerPrefs;
-    }
+  // Returns the page number corresponding to [pageLabel].  Returns -1
+  // if there is no matching page label, or if the document doesn't
+  // have page labels.
+  int getPageNumFromPageLabel(TextString *pageLabel);
+
+  Object *getViewerPreferences() { return &viewerPrefs; }
 
 private:
-    PDFDoc *doc;
-    XRef *xref;             // the xref table for this PDF file
-    PageTreeNode *pageTree; // the page tree
-    Page **pages;           // array of pages
-    Ref *pageRefs;          // object ID for each page
-#if MULTITHREADED
-    GMutex pageMutex;
-#endif
-    int numPages;          // number of pages
-    Object dests;          // named destination dictionary
-    Object nameTree;       // name tree
-    GString *baseURI;      // base URI for URI-type links
-    Object metadata;       // metadata stream
-    Object structTreeRoot; // structure tree root dictionary
-    Object outline;        // outline dictionary
-    Object acroForm;       // AcroForm dictionary
-    GBool needsRendering;  // NeedsRendering flag
-    Form *form;            // parsed form
-    Object ocProperties;   // OCProperties dictionary
-    GList *embeddedFiles;  // embedded file list [EmbeddedFile]
-    GList *pageLabels;     // page labels [PageLabelNode]
-    Object viewerPrefs;    // ViewerPreferences object
-    GBool ok;              // true if catalog is valid
 
-    Object *findDestInTree(Object *tree, GString *name, Object *obj);
-    GBool readPageTree(Object *catDict);
-    int countPageTree(Object *pagesObj);
-    void loadPage(int pg);
-    void loadPage2(int pg, int relPg, PageTreeNode *node);
-    void readEmbeddedFileList(Dict *catDict);
-    void readEmbeddedFileTree(Object *node);
-    void readFileAttachmentAnnots(Object *pageNodeRef, char *touchedObjs);
-    void readEmbeddedFile(Object *fileSpec, Object *name1);
-    void readPageLabelTree(Object *root);
-    void readPageLabelTree2(Object *node);
-    PageLabelNode *findPageLabel(int pageNum);
-    GString *makeRomanNumeral(int num, GBool uppercase);
-    GString *makeLetterLabel(int num, GBool uppercase);
-    GBool convertPageLabelToInt(TextString *pageLabel, int prefixLength, char style, int *n);
+  PDFDoc *doc;
+  XRef *xref;			// the xref table for this PDF file
+  PageTreeNode *pageTree;	// the page tree
+  Page **pages;			// array of pages
+  Ref *pageRefs;		// object ID for each page
+#if MULTITHREADED
+  GMutex pageMutex;
+#endif
+  int numPages;			// number of pages
+  Object dests;			// named destination dictionary
+  Object nameTree;		// name tree
+  GString *baseURI;		// base URI for URI-type links
+  Object metadata;		// metadata stream
+  Object structTreeRoot;	// structure tree root dictionary
+  Object outline;		// outline dictionary
+  Object acroForm;		// AcroForm dictionary
+  GBool needsRendering;		// NeedsRendering flag
+  Form *form;			// parsed form
+  Object ocProperties;		// OCProperties dictionary
+  GList *embeddedFiles;		// embedded file list [EmbeddedFile]
+  GList *pageLabels;		// page labels [PageLabelNode]
+  Object viewerPrefs;		// ViewerPreferences object
+  GBool ok;			// true if catalog is valid
+
+  Object *findDestInTree(Object *tree, GString *name, Object *obj);
+  GBool readPageTree(Object *catDict);
+  int countPageTree(Object *pagesObj);
+  void loadPage(int pg);
+  void loadPage2(int pg, int relPg, PageTreeNode *node);
+  void readEmbeddedFileList(Dict *catDict);
+  void readEmbeddedFileTree(Object *node);
+  void readFileAttachmentAnnots(Object *pageNodeRef,
+				char *touchedObjs);
+  void readEmbeddedFile(Object *fileSpec, Object *name1);
+  void readPageLabelTree(Object *root);
+  void readPageLabelTree2(Object *node);
+  PageLabelNode *findPageLabel(int pageNum);
+  GString *makeRomanNumeral(int num, GBool uppercase);
+  GString *makeLetterLabel(int num, GBool uppercase);
+  GBool convertPageLabelToInt(TextString *pageLabel, int prefixLength,
+			      char style, int *n);
 };
 
 #endif

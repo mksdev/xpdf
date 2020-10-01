@@ -17,8 +17,8 @@
 #pragma interface
 #endif
 
-#include "CharTypes.h"
 #include "gtypes.h"
+#include "CharTypes.h"
 
 #if MULTITHREADED
 #include "GMutex.h"
@@ -29,16 +29,16 @@ class GString;
 //------------------------------------------------------------------------
 
 enum UnicodeMapKind {
-    unicodeMapUser,     // read from a file
-    unicodeMapResident, // static list of ranges
-    unicodeMapFunc      // function pointer
+  unicodeMapUser,		// read from a file
+  unicodeMapResident,		// static list of ranges
+  unicodeMapFunc		// function pointer
 };
 
 typedef int (*UnicodeMapFunc)(Unicode u, char *buf, int bufSize);
 
 struct UnicodeMapRange {
-    Unicode start, end; // range of Unicode chars
-    Guint code, nBytes; // first output code
+  Unicode start, end;		// range of Unicode chars
+  Guint code, nBytes;		// first output code
 };
 
 struct UnicodeMapExt;
@@ -47,57 +47,57 @@ struct UnicodeMapExt;
 
 class UnicodeMap {
 public:
-    // Create the UnicodeMap specified by <encodingName>.  Sets the
-    // initial reference count to 1.  Returns NULL on failure.
-    static UnicodeMap *parse(GString *encodingNameA);
 
-    // Create a resident UnicodeMap.
-    UnicodeMap(const char *encodingNameA, GBool unicodeOutA, UnicodeMapRange *rangesA, int lenA);
+  // Create the UnicodeMap specified by <encodingName>.  Sets the
+  // initial reference count to 1.  Returns NULL on failure.
+  static UnicodeMap *parse(GString *encodingNameA);
 
-    // Create a resident UnicodeMap that uses a function instead of a
-    // list of ranges.
-    UnicodeMap(const char *encodingNameA, GBool unicodeOutA, UnicodeMapFunc funcA);
+  // Create a resident UnicodeMap.
+  UnicodeMap(const char *encodingNameA, GBool unicodeOutA,
+	     UnicodeMapRange *rangesA, int lenA);
 
-    ~UnicodeMap();
+  // Create a resident UnicodeMap that uses a function instead of a
+  // list of ranges.
+  UnicodeMap(const char *encodingNameA, GBool unicodeOutA,
+	     UnicodeMapFunc funcA);
 
-    void incRefCnt();
-    void decRefCnt();
+  ~UnicodeMap();
 
-    GString *getEncodingName() {
-        return encodingName;
-    }
+  void incRefCnt();
+  void decRefCnt();
 
-    GBool isUnicode() {
-        return unicodeOut;
-    }
+  GString *getEncodingName() { return encodingName; }
 
-    // Return true if this UnicodeMap matches the specified
-    // <encodingNameA>.
-    GBool match(GString *encodingNameA);
+  GBool isUnicode() { return unicodeOut; }
 
-    // Map Unicode to the target encoding.  Fills in <buf> with the
-    // output and returns the number of bytes used.  Output will be
-    // truncated at <bufSize> bytes.  No string terminator is written.
-    // Returns 0 if no mapping is found.
-    int mapUnicode(Unicode u, char *buf, int bufSize);
+  // Return true if this UnicodeMap matches the specified
+  // <encodingNameA>.
+  GBool match(GString *encodingNameA);
+
+  // Map Unicode to the target encoding.  Fills in <buf> with the
+  // output and returns the number of bytes used.  Output will be
+  // truncated at <bufSize> bytes.  No string terminator is written.
+  // Returns 0 if no mapping is found.
+  int mapUnicode(Unicode u, char *buf, int bufSize);
 
 private:
-    UnicodeMap(GString *encodingNameA);
 
-    GString *encodingName;
-    UnicodeMapKind kind;
-    GBool unicodeOut;
-    union {
-        UnicodeMapRange *ranges; // (user, resident)
-        UnicodeMapFunc func;     // (func)
-    };
-    int len;              // (user, resident)
-    UnicodeMapExt *eMaps; // (user)
-    int eMapsLen;         // (user)
+  UnicodeMap(GString *encodingNameA);
+
+  GString *encodingName;
+  UnicodeMapKind kind;
+  GBool unicodeOut;
+  union {
+    UnicodeMapRange *ranges;	// (user, resident)
+    UnicodeMapFunc func;	// (func)
+  };
+  int len;			// (user, resident)
+  UnicodeMapExt *eMaps;		// (user)
+  int eMapsLen;			// (user)
 #if MULTITHREADED
-    GAtomicCounter refCnt;
+  GAtomicCounter refCnt;
 #else
-    int refCnt;
+  int refCnt;
 #endif
 };
 
@@ -107,16 +107,18 @@ private:
 
 class UnicodeMapCache {
 public:
-    UnicodeMapCache();
-    ~UnicodeMapCache();
 
-    // Get the UnicodeMap for <encodingName>.  Increments its reference
-    // count; there will be one reference for the cache plus one for the
-    // caller of this function.  Returns NULL on failure.
-    UnicodeMap *getUnicodeMap(GString *encodingName);
+  UnicodeMapCache();
+  ~UnicodeMapCache();
+
+  // Get the UnicodeMap for <encodingName>.  Increments its reference
+  // count; there will be one reference for the cache plus one for the
+  // caller of this function.  Returns NULL on failure.
+  UnicodeMap *getUnicodeMap(GString *encodingName);
 
 private:
-    UnicodeMap *cache[unicodeMapCacheSize];
+
+  UnicodeMap *cache[unicodeMapCacheSize];
 };
 
 #endif

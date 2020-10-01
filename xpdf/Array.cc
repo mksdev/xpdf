@@ -12,63 +12,63 @@
 #pragma implementation
 #endif
 
-#include "Array.h"
-#include "Object.h"
+#include <stdlib.h>
+#include <stddef.h>
 #include "gmem.h"
 #include "gmempp.h"
-#include <stddef.h>
-#include <stdlib.h>
+#include "Object.h"
+#include "Array.h"
 
 //------------------------------------------------------------------------
 // Array
 //------------------------------------------------------------------------
 
 Array::Array(XRef *xrefA) {
-    xref = xrefA;
-    elems = NULL;
-    size = length = 0;
-    ref = 1;
+  xref = xrefA;
+  elems = NULL;
+  size = length = 0;
+  ref = 1;
 }
 
 Array::~Array() {
-    int i;
+  int i;
 
-    for(i = 0; i < length; ++i)
-        elems[i].free();
-    gfree(elems);
+  for (i = 0; i < length; ++i)
+    elems[i].free();
+  gfree(elems);
 }
 
 void Array::add(Object *elem) {
-    if(length == size) {
-        if(length == 0) {
-            size = 8;
-        } else {
-            size *= 2;
-        }
-        elems = (Object *)greallocn(elems, size, sizeof(Object));
+  if (length == size) {
+    if (length == 0) {
+      size = 8;
+    } else {
+      size *= 2;
     }
-    elems[length] = *elem;
-    ++length;
+    elems = (Object *)greallocn(elems, size, sizeof(Object));
+  }
+  elems[length] = *elem;
+  ++length;
 }
 
 Object *Array::get(int i, Object *obj, int recursion) {
-    if(i < 0 || i >= length) {
+  if (i < 0 || i >= length) {
 #ifdef DEBUG_MEM
-        abort();
+    abort();
 #else
-        return obj->initNull();
+    return obj->initNull();
 #endif
-    }
-    return elems[i].fetch(xref, obj, recursion);
+  }
+  return elems[i].fetch(xref, obj, recursion);
 }
 
 Object *Array::getNF(int i, Object *obj) {
-    if(i < 0 || i >= length) {
+  if (i < 0 || i >= length) {
 #ifdef DEBUG_MEM
-        abort();
+    abort();
 #else
-        return obj->initNull();
+    return obj->initNull();
 #endif
-    }
-    return elems[i].copy(obj);
+  }
+  return elems[i].copy(obj);
 }

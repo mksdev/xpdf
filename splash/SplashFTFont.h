@@ -27,27 +27,32 @@ class SplashFTFontFile;
 // SplashFTFont
 //------------------------------------------------------------------------
 
-class SplashFTFont : public SplashFont {
+class SplashFTFont: public SplashFont {
 public:
-    SplashFTFont(SplashFTFontFile *fontFileA, SplashCoord *matA, SplashCoord *textMatA);
 
-    virtual ~SplashFTFont();
+  SplashFTFont(SplashFTFontFile *fontFileA, SplashCoord *matA,
+	       SplashCoord *textMatA);
 
-    // Munge xFrac and yFrac before calling SplashFont::getGlyph.
-    virtual GBool getGlyph(int c, int xFrac, int yFrac, SplashGlyphBitmap *bitmap);
+  virtual ~SplashFTFont();
 
-    // Rasterize a glyph.  The <xFrac> and <yFrac> values are the same
-    // as described for getGlyph.
-    virtual GBool makeGlyph(int c, int xFrac, int yFrac, SplashGlyphBitmap *bitmap);
+  // Munge xFrac and yFrac before calling SplashFont::getGlyph.
+  virtual GBool getGlyph(int c, int xFrac, int yFrac,
+			 SplashGlyphBitmap *bitmap);
 
-    // Return the path for a glyph.
-    virtual SplashPath *getGlyphPath(int c);
+  // Rasterize a glyph.  The <xFrac> and <yFrac> values are the same
+  // as described for getGlyph.
+  virtual GBool makeGlyph(int c, int xFrac, int yFrac,
+			  SplashGlyphBitmap *bitmap);
+
+  // Return the path for a glyph.
+  virtual SplashPath *getGlyphPath(int c);
 
 private:
-    FT_Size sizeObj;
-    FT_Matrix matrix;
-    FT_Matrix textMatrix;
-    SplashCoord textScale;
+
+  FT_Size sizeObj;
+  FT_Matrix matrix;
+  FT_Matrix textMatrix;
+  SplashCoord textScale;
 };
 
 #endif // HAVE_FREETYPE_H

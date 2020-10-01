@@ -15,8 +15,8 @@
 #pragma interface
 #endif
 
-#include "CharTypes.h"
 #include "Object.h"
+#include "CharTypes.h"
 
 class GString;
 class GList;
@@ -28,66 +28,57 @@ class TextString;
 
 class Outline {
 public:
-    Outline(Object *outlineObj, XRef *xref);
-    ~Outline();
 
-    GList *getItems() {
-        return items;
-    }
+  Outline(Object *outlineObj, XRef *xref);
+  ~Outline();
+
+  GList *getItems() { return items; }
 
 private:
-    GList *items; // NULL if document has no outline
-                  //   [OutlineItem]
+
+  GList *items;			// NULL if document has no outline
+				//   [OutlineItem]
 };
 
 //------------------------------------------------------------------------
 
 class OutlineItem {
 public:
-    OutlineItem(Object *itemRefA, Dict *dict, OutlineItem *parentA, XRef *xrefA);
-    ~OutlineItem();
 
-    static GList *readItemList(Object *firstItemRef, Object *lastItemRef, OutlineItem *parentA, XRef *xrefA);
+  OutlineItem(Object *itemRefA, Dict *dict, OutlineItem *parentA, XRef *xrefA);
+  ~OutlineItem();
 
-    void open();
-    void close();
+  static GList *readItemList(Object *firstItemRef, Object *lastItemRef,
+			     OutlineItem *parentA, XRef *xrefA);
 
-    Unicode *getTitle();
-    int getTitleLength();
-    TextString *getTitleTextString() {
-        return title;
-    }
-    LinkAction *getAction() {
-        return action;
-    }
-    GBool isOpen() {
-        return startsOpen;
-    }
-    GBool hasKids() {
-        return firstRef.isRef();
-    }
-    GList *getKids() {
-        return kids;
-    }
-    OutlineItem *getParent() {
-        return parent;
-    }
+  void open();
+  void close();
+
+  Unicode *getTitle();
+  int getTitleLength();
+  TextString *getTitleTextString() { return title; }
+  LinkAction *getAction() { return action; }
+  GBool isOpen() { return startsOpen; }
+  GBool hasKids() { return firstRef.isRef(); }
+  GList *getKids() { return kids; }
+  OutlineItem *getParent() { return parent; }
 
 private:
-    friend class PDFDoc;
 
-    XRef *xref;
-    TextString *title; // may be NULL
-    LinkAction *action;
-    Object itemRef;
-    Object firstRef;
-    Object lastRef;
-    Object nextRef;
-    GBool startsOpen;
-    int pageNum; // page number (used by
-                 //   PDFDoc::getOutlineTargetPage)
-    GList *kids; // NULL unless this item is open [OutlineItem]
-    OutlineItem *parent;
+  friend class PDFDoc;
+
+  XRef *xref;
+  TextString *title;		// may be NULL
+  LinkAction *action;
+  Object itemRef;
+  Object firstRef;
+  Object lastRef;
+  Object nextRef;
+  GBool startsOpen;
+  int pageNum;			// page number (used by
+				//   PDFDoc::getOutlineTargetPage)
+  GList *kids;			// NULL unless this item is open [OutlineItem]
+  OutlineItem *parent;
 };
 
 #endif

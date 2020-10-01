@@ -11,9 +11,9 @@
 
 #include <aconf.h>
 
-#include "CharTypes.h"
-#include "GString.h"
 #include "gtypes.h"
+#include "GString.h"
+#include "CharTypes.h"
 
 // Convert [u] to UTF-8 in [buf].  Returns the number of bytes written
 // to [buf].  If [u] requires more then [bufSize] bytes in UTF-8,
